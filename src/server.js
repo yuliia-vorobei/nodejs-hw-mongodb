@@ -16,32 +16,40 @@ export const setupServer = () => {
 
   app.use(logger);
 
-  app.get('/contacts', async (req, res) => {
-    const data = await contactServices.getContacts();
-    res.json({
-      status: 200,
-      message: 'Successfully found contacts!',
-      data,
-    });
+  app.get('/contacts', async (req, res, next) => {
+    try {
+      const data = await contactServices.getContacts();
+      res.json({
+        status: 200,
+        message: 'Successfully found contacts!',
+        data,
+      });
+    } catch (err) {
+      next(err);
+    }
   });
 
-  app.get('/contacts/:contactId', async (req, res) => {
-    //req.params зберігаються динамічні дані
-    const { contactId } = req.params;
-    const data = await contactServices.getContactById(contactId);
+  app.get('/contacts/:contactId', async (req, res, next) => {
+    try {
+      //req.params зберігаються динамічні дані
+      const { contactId } = req.params;
+      const data = await contactServices.getContactById(contactId);
 
-    if (!data) {
-      res.status(404).json({
-        message: 'Contact not found',
+      if (!data) {
+        res.status(404).json({
+          message: 'Contact not found',
+        });
+        return;
+      }
+
+      res.status(200).json({
+        status: 200,
+        message: `Successfully found contact with id ${contactId}!`,
+        data,
       });
-      return;
+    } catch (err) {
+      next(err);
     }
-
-    res.status(200).json({
-      status: 200,
-      message: `Successfully found contact with id ${contactId}!`,
-      data,
-    });
   });
 
   app.use((req, res, next) => {
