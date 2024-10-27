@@ -1,0 +1,11 @@
+//**.editorconfig**
+
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+// для  уникнення проблем, пов'язаних із різницею у символах кінця рядка між різними операційними системами, та забезпечити більш гладку роботу з кодом
