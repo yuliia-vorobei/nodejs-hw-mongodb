@@ -59,13 +59,8 @@ export const setupServer = () => {
 
   app.use((err, req, res, next) => {
     res.status(500).json({
-      message: 'An unexpected error has happened',
-    });
-  });
-
-  app.use((err, req, res, next) => {
-    res.status(502).json({
-      message: 'An unexpected error has happened',
+      message: 'Something went wrong',
+      error: err.message,
     });
   });
 
