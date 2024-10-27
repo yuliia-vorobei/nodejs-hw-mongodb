@@ -29,17 +29,18 @@ export const setupServer = () => {
     //req.params зберігаються динамічні дані
     const { contactId } = req.params;
     const data = await contactServices.getContactById(contactId);
-    res.json({
+    if (!data) {
+      res.status(404).json({
+        message: 'Contact not found',
+      });
+      return;
+    }
+
+    res.status(200).json({
       status: 200,
       message: `Successfully found contact with id ${contactId}!`,
       data,
     });
-
-    if (!data) {
-      return res.status(404).json({
-        message: 'Contact not found',
-      });
-    }
   });
 
   app.use((req, res) => {
