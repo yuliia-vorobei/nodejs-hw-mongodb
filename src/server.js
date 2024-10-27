@@ -44,7 +44,7 @@ export const setupServer = () => {
     });
   });
 
-  app.use((req, res) => {
+  app.use((req, res, next) => {
     // лише статус 200 є автом, всі інші треба вказувати
     res.status(404).json({
       message: 'Not found',
@@ -59,6 +59,12 @@ export const setupServer = () => {
 
   app.use((err, req, res, next) => {
     res.status(500).json({
+      message: 'An unexpected error has happened',
+    });
+  });
+
+  app.use((err, req, res, next) => {
+    res.status(502).json({
       message: 'An unexpected error has happened',
     });
   });
