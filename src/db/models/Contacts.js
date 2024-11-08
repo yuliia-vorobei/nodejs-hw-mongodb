@@ -25,6 +25,8 @@ const contactSchema = new Schema(
   { timestamps: true },
 );
 
+export const sortByList = ['name', 'phoneNumber', 'email'];
+
 const ContactCollection = model('contact', contactSchema);
 
 export default ContactCollection;
