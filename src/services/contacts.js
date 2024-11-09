@@ -23,12 +23,18 @@ export const getContacts = async ({
   }
 
   const data = await contactsQuery;
+  const notFilteredtTotalItems = await ContactCollection.countDocuments();
 
-  //skip пропускає в запиті перших 2, а ліміт віддає 10
-  const totalItems = await ContactCollection.find()
-    .merge(contactsQuery)
-    .countDocuments(); // повертає к-сть елементів
-  const paginationData = calculatePaginationData({ totalItems, page, perPage });
+  // //skip пропускає в запиті перших 2, а ліміт віддає 10
+  // const totalItems = await ContactCollection.find()
+  //   .merge(contactsQuery)
+  //   .countDocuments(); // повертає к-сть елементів
+
+  const paginationData = calculatePaginationData({
+    totalItems: notFilteredtTotalItems,
+    page,
+    perPage,
+  });
   return {
     data,
     ...paginationData,
@@ -44,21 +50,18 @@ export const createContact = async (payload) => {
 };
 
 export const updateContact = async ({ _id, payload, options = {} }) => {
-  const rawResult = await ContactCollection.findOneAndUpdate({ _id }, payload, {
+  const data = await ContactCollection.findOneAndUpdate({ _id }, payload, {
     ...options,
     new: true,
     // includeResultMetadata: true,
     // для того щоб монгус надсилав оновлені дані в респонсі (лише оновлюються в базі)
     //upsert: true, - для put на оновлення якщо немає таких даних по id
   });
-  return rawResult;
-  //findOneAndUpdate({ _id }, payload, - id це обєкт який відправляємо для патч по чому саме змінюємо
-  // if (!rawResult || !rawResult.value) return null;
 
-  // return {
-  //   data: rawResult.value,
-  //   isNew: Boolean(rawResult.lastErrorObject.upserted),
-  // };
+  //findOneAndUpdate({ _id }, payload, - id це обєкт який відправляємо для патч по чому саме змінюємо
+
+  return data;
+
 };
 
 export const deleteContact = async (filter) => {
