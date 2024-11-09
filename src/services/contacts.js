@@ -57,9 +57,11 @@ export const updateContact = async ({ _id, payload, options = {} }) => {
     // для того щоб монгус надсилав оновлені дані в респонсі (лише оновлюються в базі)
     //upsert: true, - для put на оновлення якщо немає таких даних по id
   });
+
   //findOneAndUpdate({ _id }, payload, - id це обєкт який відправляємо для патч по чому саме змінюємо
-  // if (!rawResult || !rawResult.value) return null;
+
   return data;
+
 };
 
 export const deleteContact = async (filter) => {
