@@ -8,11 +8,10 @@ export const getContacts = async ({
   sortOrder = 'asc',
   filter = {},
 }) => {
-  const skip = (page - 1) * perPage;
-  const contactsQuery = ContactCollection.find()
-    .skip(skip)
-    .limit(perPage)
-    .sort({ [sortBy]: sortOrder });
+  const contactsQuery = ContactCollection.find();
+  // .skip(skip)
+  // .limit(perPage)
+  // .sort({ [sortBy]: sortOrder });
 
   if (filter.contactType) {
     contactsQuery.where('contactType').in(filter.contactType);
@@ -22,8 +21,18 @@ export const getContacts = async ({
     contactsQuery.where('isFavourite').in(filter.isFavourite);
   }
 
-  const data = await contactsQuery;
-  const notFilteredtTotalItems = await ContactCollection.countDocuments();
+  if (filter.userId) {
+    contactsQuery.where('userId').equals(filter.userId);
+  }
+  const totalItems = await ContactCollection.find()
+    .merge(contactsQuery)
+    .countDocuments();
+
+  const skip = (page - 1) * perPage;
+  const data = await contactsQuery
+    .skip(skip)
+    .limit(perPage)
+    .sort({ [sortBy]: sortOrder });
 
   // //skip пропускає в запиті перших 2, а ліміт віддає 10
   // const totalItems = await ContactCollection.find()
@@ -31,7 +40,7 @@ export const getContacts = async ({
   //   .countDocuments(); // повертає к-сть елементів
 
   const paginationData = calculatePaginationData({
-    totalItems: notFilteredtTotalItems,
+    totalItems,
     page,
     perPage,
   });
@@ -61,7 +70,6 @@ export const updateContact = async ({ _id, payload, options = {} }) => {
   //findOneAndUpdate({ _id }, payload, - id це обєкт який відправляємо для патч по чому саме змінюємо
 
   return data;
-
 };
 
 export const deleteContact = async (filter) => {
