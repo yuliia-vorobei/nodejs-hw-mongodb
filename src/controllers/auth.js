@@ -1,22 +1,21 @@
-// import { refreshTokenLife } from '../constants/users.js';
+import { accessTokenLife, refreshTokenLife } from '../constants/users.js';
 import {
   registerUser,
   loginUser,
   refreshUserSession,
   logoutUser,
+  requestResetToken,
 } from '../services/auth.js';
 
 // import createHttpError from 'http-errors';
 const setupSession = (res, session) => {
-  const { _id, refreshToken, refreshTokenValidUntil } = session;
-
-  res.cookie('refreshToken', refreshToken, {
+  res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    expires: refreshTokenValidUntil,
+    expires: new Date(Date.now() + refreshTokenLife),
   });
-  res.cookie('sessionId', _id, {
+  res.cookie('sessionId', session._id, {
     httpOnly: true,
-    expires: refreshTokenValidUntil,
+    expires: new Date(Date.now() + accessTokenLife),
   });
 };
 
@@ -63,4 +62,14 @@ export const logoutUserController = async (req, res) => {
   res.clearCookie('refreshToken');
 
   res.status(204).send();
+};
+
+export const requestResetEmailController = async (req, res) => {
+  await requestResetToken(req.body.email);
+
+  res.json({
+    message: 'Reset password email has been successfully sent!',
+    status: 200,
+    data: {},
+  });
 };

@@ -29,13 +29,14 @@ export const getContactsController = async (req, res, next) => {
 export const getContactByIdController = async (req, res, next) => {
   //req.params зберігаються динамічні дані
   const { contactId } = req.params;
+  const { _id: userId } = req.user;
+
   if (!mongoose.Types.ObjectId.isValid(contactId)) {
     throw createHttpError(404, 'Contact not found');
   }
-  const data = await contactServices.getContactById(contactId);
+  const data = await contactServices.getContactById(contactId, userId);
   if (!data) {
-    next(createHttpError(404, 'Contact not found'));
-    return;
+    return next(createHttpError(404, 'Contact not found'));
   }
   // if (!data) {
   //   res.status(404).json({
@@ -57,8 +58,11 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactController = async (req, res) => {
-  const { _id: userId } = req.user;
-  const data = await contactServices.createContact({ ...req.body, userId });
+  // const { _id: userId } = req.user;
+  const data = await contactServices.createContact({
+    ...req.body,
+    userId: req.user._id,
+  });
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
@@ -67,12 +71,12 @@ export const createContactController = async (req, res) => {
 };
 
 export const patchContactController = async (req, res, next) => {
-  const { contactId: _id } = req.params;
-  const data = await contactServices.updateContact({ _id, payload: req.body });
+  const { contactId } = req.params;
+  const { _id: userId } = req.user;
+  const data = await contactServices.updateContact(req.body, contactId, userId);
 
   if (!data) {
-    next(createHttpError(404, 'Contact not found'));
-    return;
+    return next(createHttpError(404, 'Contact not found'));
   }
 
   res.json({
