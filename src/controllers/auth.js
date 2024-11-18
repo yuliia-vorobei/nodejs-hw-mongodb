@@ -1,4 +1,4 @@
-// import { refreshTokenLife } from '../constants/users.js';
+import { accessTokenLife, refreshTokenLife } from '../constants/users.js';
 import {
   registerUser,
   loginUser,
@@ -9,15 +9,13 @@ import {
 
 // import createHttpError from 'http-errors';
 const setupSession = (res, session) => {
-  const { _id, refreshToken, refreshTokenValidUntil } = session;
-
-  res.cookie('refreshToken', refreshToken, {
+  res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    expires: refreshTokenValidUntil,
+    expires: new Date(Date.now() + refreshTokenLife),
   });
-  res.cookie('sessionId', _id, {
+  res.cookie('sessionId', session._id, {
     httpOnly: true,
-    expires: refreshTokenValidUntil,
+    expires: new Date(Date.now() + accessTokenLife),
   });
 };
 

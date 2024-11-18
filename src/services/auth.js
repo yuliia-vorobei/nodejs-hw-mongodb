@@ -18,8 +18,8 @@ const createSession = () => {
   return {
     accessToken,
     refreshToken,
-    accessTokenValidUntil: Date.now() + accessTokenLife,
-    refreshTokenValidUntil: Date.now() + refreshTokenLife,
+    accessTokenValidUntil: new Date(Date.now() + accessTokenLife),
+    refreshTokenValidUntil: new Date(Date.now() + refreshTokenLife),
   };
 };
 
@@ -82,20 +82,31 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
     _id: sessionId,
     refreshToken,
   });
+
   if (!session) {
     throw createHttpError(401, 'Session is not found');
   }
+
   if (Date.now() > session.refreshTokenValidUntil) {
     throw createHttpError(401, 'Token is expired');
   }
 
-  await SessionCollection.deleteOne({ userId: session._id });
+  await SessionCollection.deleteOne({ _id: sessionId, refreshToken });
 
   const newSession = createSession();
+
   return SessionCollection.create({
-    userId: session._id,
+    userId: session.userId,
     ...newSession,
   });
+};
+
+export const requestResetToken = async (email) => {
+  const user = await UserCollection.findOne({ email });
+
+  if (!user) {
+    throw createHttpError(404, 'User is not found');
+  }
 };
 
 export const logoutUser = (sessionId) =>

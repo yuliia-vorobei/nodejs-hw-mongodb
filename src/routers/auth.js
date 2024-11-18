@@ -28,6 +28,11 @@ authRouter.post(
   ctrlWrapper(loginUserController),
 );
 
+authRouter.post(
+  '/send-reset-email',
+  validateBody(requestResetEmailSchema),
+  ctrlWrapper(requestResetEmailController),
+);
 authRouter.post('/refresh', ctrlWrapper(refreshSessionController));
 authRouter.post('/logout', ctrlWrapper(logoutUserController));
 
