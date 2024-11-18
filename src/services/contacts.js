@@ -9,6 +9,7 @@ export const getContacts = async ({
   filter = {},
 }) => {
   const contactsQuery = ContactCollection.find();
+
   // .skip(skip)
   // .limit(perPage)
   // .sort({ [sortBy]: sortOrder });
@@ -50,29 +51,43 @@ export const getContacts = async ({
   };
 };
 
-export const getContactById = (contactId) =>
-  ContactCollection.findById(contactId);
-
-export const createContact = async (payload) => {
-  const contact = ContactCollection.create(payload);
+export const getContactById = async (contactID, userId) => {
+  const contact = await ContactCollection.findOne({ _id: contactID, userId });
   return contact;
 };
 
-export const updateContact = async ({ _id, payload, options = {} }) => {
-  const data = await ContactCollection.findOneAndUpdate({ _id }, payload, {
-    ...options,
-    new: true,
-    // includeResultMetadata: true,
-    // для того щоб монгус надсилав оновлені дані в респонсі (лише оновлюються в базі)
-    //upsert: true, - для put на оновлення якщо немає таких даних по id
-  });
+export const createContact = async (payload) => {
+  const contact = await ContactCollection.create(payload);
+  return contact;
+};
+
+export const updateContact = async (
+  contactID,
+  userId,
+  payload,
+  options = {},
+) => {
+  const data = await ContactCollection.findOneAndUpdate(
+    { _id: userId, contactID },
+    payload,
+    {
+      ...options,
+      new: true,
+      // includeResultMetadata: true,
+      // для того щоб монгус надсилав оновлені дані в респонсі (лише оновлюються в базі)
+      //upsert: true, - для put на оновлення якщо немає таких даних по id
+    },
+  );
 
   //findOneAndUpdate({ _id }, payload, - id це обєкт який відправляємо для патч по чому саме змінюємо
 
   return data;
 };
 
-export const deleteContact = async (filter) => {
-  const deletedContact = await ContactCollection.findOneAndDelete(filter);
+export const deleteContact = async (contactId, userId) => {
+  const deletedContact = await ContactCollection.findOneAndDelete({
+    _id: contactId,
+    userId,
+  });
   return deletedContact;
 };
