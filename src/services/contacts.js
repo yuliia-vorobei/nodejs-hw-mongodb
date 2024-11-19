@@ -68,11 +68,11 @@ export const updateContact = async (
   options = {},
 ) => {
   const data = await ContactCollection.findOneAndUpdate(
-    { _id: userId, contactID },
+    { _id: contactID, userId },
     payload,
     {
-      ...options,
       new: true,
+      ...options,
       // includeResultMetadata: true,
       // для того щоб монгус надсилав оновлені дані в респонсі (лише оновлюються в базі)
       //upsert: true, - для put на оновлення якщо немає таких даних по id
@@ -84,10 +84,9 @@ export const updateContact = async (
   return data;
 };
 
-export const deleteContact = async (contactId, userId) => {
+export const deleteContact = async (contactId) => {
   const deletedContact = await ContactCollection.findOneAndDelete({
     _id: contactId,
-    userId,
   });
   return deletedContact;
 };
