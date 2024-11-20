@@ -30,6 +30,6 @@ export const setupServer = () => {
   app.use('*', notFoundHandler);
   app.use(errorHandler);
 
-  const PORT = Number(env('PORT', 3002));
+  const PORT = Number(env('PORT', 3000));
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`)); // запуск сервера
 };
