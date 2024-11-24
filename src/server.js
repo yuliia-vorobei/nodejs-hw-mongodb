@@ -9,13 +9,16 @@ import { errorHandler } from './middlewares/errorHandler.js';
 
 export const setupServer = () => {
   const app = express(); // веб сервер
-  app.use(
-    express.json({
-      type: ['application/json', 'application/vnd.api+json'],
-    }),
-  );
+  // app.use(
+  //   express.json({
+  //     type: ['application/json', 'application/vnd.api+json'],
+  //   }),
+  // );
+  app.use(express.json());
+
   app.use(cors());
   app.use(cookieParser());
+  app.use(express.static('uploads'));
 
   const logger = pino({
     transport: {
