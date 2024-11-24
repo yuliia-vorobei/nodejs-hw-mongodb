@@ -1,3 +1,4 @@
+// import createHttpError from 'http-errors';
 import { accessTokenLife, refreshTokenLife } from '../constants/users.js';
 import {
   registerUser,
@@ -5,9 +6,9 @@ import {
   refreshUserSession,
   logoutUser,
   requestResetToken,
+  resetPassword,
 } from '../services/auth.js';
 
-// import createHttpError from 'http-errors';
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
@@ -66,10 +67,26 @@ export const logoutUserController = async (req, res) => {
 
 export const requestResetEmailController = async (req, res) => {
   await requestResetToken(req.body.email);
+  // if (!data) {
+  //   throw createHttpError(
+  //     500,
+  //     'Failed to send the email, please try again later.',
+  //   );
+  // }
 
   res.status(200).json({
     status: 200,
     message: 'Reset password email has been successfully sent.',
+    data: {},
+  });
+};
+
+export const resetPasswordController = async (req, res) => {
+  await resetPassword(req.body);
+
+  res.json({
+    status: 200,
+    message: 'Password has been successfully reset.',
     data: {},
   });
 };

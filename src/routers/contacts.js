@@ -14,6 +14,7 @@ import {
 } from '../validation/contacts.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
 
 const contactsRouter = Router();
 
@@ -29,12 +30,14 @@ contactsRouter.get(
 
 contactsRouter.post(
   '/',
+  upload.single('photo'),
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
 
 contactsRouter.patch(
   '/:contactId',
+  upload.single('photo'),
   isValidId,
   validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
@@ -47,3 +50,6 @@ contactsRouter.delete(
 );
 
 export default contactsRouter;
+
+// upload.array('photo', 10), в полі фото очікуємо масив до 10 файлів
+// upload.fields([{name: "poster", maxCount: 1}, {name: "post", maxCount: 4}]) очікуємо файли в двох полях і яка макс кількість в кожному
