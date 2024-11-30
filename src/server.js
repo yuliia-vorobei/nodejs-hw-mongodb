@@ -6,6 +6,7 @@ import router from './routers/index.js';
 import { env } from './utils/env.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 export const setupServer = () => {
   const app = express(); // веб сервер
@@ -19,6 +20,7 @@ export const setupServer = () => {
   app.use(cors());
   app.use(cookieParser());
   app.use(express.static('uploads'));
+  app.use('/api-docs', swaggerDocs());
 
   const logger = pino({
     transport: {
