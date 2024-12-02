@@ -7,14 +7,14 @@ security:
   - bearerAuth: []
 parameters:
   - in: path
-    name: id
+    name: contactId
     required: true
     schema:
       type: string
       example: '67432bc8d9ac7fd4d324fcf4'
 responses:
   '200':
-    description: 'Get student by id'
+    description: 'Get contact by id'
     content:
       application/json:
         schema:
@@ -35,3 +35,7 @@ responses:
               $ref: '../../../components/schemas/contact.yaml'
   '401':
     $ref: '../../../components/responses/401.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'
+  '500':
+    $ref: '../../../components/responses/500.yaml'

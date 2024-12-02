@@ -1,4 +1,4 @@
-description: Not found
+description: Bad Request Error
 content:
   application/json:
     schema:
@@ -10,10 +10,10 @@ content:
       properties:
         status:
           type: integer
-          example: 404
+          example: 400
         message:
           type: string
-          example: NotFoundError
+          example: BadRequestError
         data:
           type: object
           required:
@@ -21,4 +21,7 @@ content:
           properties:
             message:
               type: string
-              example: Contact not found
+              example: 'Bad Request'
+            errors:
+              type: array
+              example: 'Array of errors'

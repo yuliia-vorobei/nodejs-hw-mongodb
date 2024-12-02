@@ -2,7 +2,7 @@ tags:
   - Contacts
 summary: Update contact's information
 operationId: updateContact
-description: Partially updating contact's information
+description: "Partially updating contact's information"
 security:
   - bearerAuth: []
 parameters:
@@ -12,9 +12,39 @@ parameters:
     schema:
       type: string
       example: '67432bc8d9ac7fd4d324fcf4'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'Yuliia'
+          phoneNumber:
+            description: "Contact's age"
+            type: number
+            example: 380966666666
+          email:
+            description: "Contact's email"
+            type: string
+            example: vorobeju1@gmail.com
+          contactType:
+            description: "Contact's contact type"
+            type: string
+            enum: ['work', 'home', 'personal']
+          photo:
+            description: "Link to contact's photo"
+            type: string
+            example: https://res.cloudinary.com/dokixfaw7/image/upload/v1732471141/yqvwtjjjlerkgzm1vnjb.jpg
+          isFavourite:
+            description: 'Whether is contacts favourite'
+            type: boolean
+            example: false
 responses:
   '200':
-    description: 'Update contact's information'
+    description: 'Update contacts information'
     content:
       application/json:
         schema:
@@ -33,5 +63,11 @@ responses:
             data:
               type: object
               $ref: '../../../components/schemas/contact.yaml'
+  '400':
+    $ref: '../../../components/responses/400.yaml'
+  '401':
+    $ref: '../../../components/responses/401.yaml'
   '404':
     $ref: '../../../components/responses/404.yaml'
+  '500':
+    $ref: '../../../components/responses/500.yaml'
