@@ -35,6 +35,6 @@ properties:
     type: string
     enum: ['work', 'home', 'personal']
   userId:
-    description: 'Extra id for user'
+    description: 'Unique identifier for the contact'
     type: string
     example: 673cc87e905635251dadef61

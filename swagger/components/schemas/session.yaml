@@ -1,0 +1,30 @@
+type: object
+required:
+  - userId
+  - accessToken
+  - refreshToken
+  - accessTokenValidUntil
+  - refreshTokenValidUntil
+properties:
+  userId:
+    description: 'Unique identifier for the user'
+    type: string
+    example: 673cc87e905635251dadef61
+  accessToken:
+    description: 'Access token for user, valid for a limited time'
+    type: string
+    example: 'jhHQ/5g1SpZbdBu/bHJN9Kw6dgNUhoDkwwmz1J3A'
+  refreshToken:
+    description: 'Refresh token for user, used to generate new access token'
+    type: string
+    example: 'jhHQ/5g1SpZbdBu/bHJN9Kw6dgNUhoDkwwmz1J3A'
+  accessTokenValidUntil:
+    description: 'Access token is valid for 15 minutes'
+    type: string
+    format: date-time
+    example: '2024-01-01T00:15:00Z'
+  refreshTokenValidUntil:
+    description: 'Refresh token is valid for 30 days'
+    type: string
+    format: date-time
+    example: '2024-01-01T00:15:00Z'
