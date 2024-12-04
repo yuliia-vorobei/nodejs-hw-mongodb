@@ -115,7 +115,7 @@ export const findUser = (filter) => UserCollection.findOne(filter);
 export const requestResetToken = async (email) => {
   const user = await UserCollection.findOne({ email });
   if (!user) {
-    throw createHttpError(401, 'User is not found');
+    throw createHttpError(404, 'User is not found');
   }
 
   const resetToken = jwt.sign(
@@ -171,7 +171,7 @@ export const resetPassword = async (payload) => {
   });
 
   if (!user) {
-    throw createHttpError(404, 'User not found');
+    throw createHttpError(404, 'User is not found');
   }
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);

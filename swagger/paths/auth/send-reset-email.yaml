@@ -1,0 +1,48 @@
+tags:
+  - Auth
+summary: Request reset of a password
+operationId: requestResetEmail
+description: 'Request reset of a current password by email'
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+        properties:
+          email:
+            description: "User's email"
+            type: string
+            format: email
+            example: 'vorobeju1@gmail.com'
+responses:
+  '200':
+    description: 'Reset password email has been successfully sent.'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Reset password email has been successfully sent.
+            data:
+              type: object
+              example: {}
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '404':
+    $ref: '../../components/responses/404-user.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

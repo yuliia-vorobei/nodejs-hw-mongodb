@@ -32,9 +32,9 @@ requestBody:
             type: string
             enum: ['work', 'home', 'personal']
           photo:
-            description: "Link to contact's photo"
+            description: "Contact's photo"
             type: string
-            example: https://res.cloudinary.com/dokixfaw7/image/upload/v1732471141/yqvwtjjjlerkgzm1vnjb.jpg
+            format: binary
           isFavourite:
             description: 'Whether is contacts favourite'
             type: boolean
