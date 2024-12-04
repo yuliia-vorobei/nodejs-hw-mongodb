@@ -222,9 +222,9 @@
                     ]
                   },
                   "photo": {
-                    "description": "Link to contact's photo",
+                    "description": "Contact's photo",
                     "type": "string",
-                    "example": "https://res.cloudinary.com/dokixfaw7/image/upload/v1732471141/yqvwtjjjlerkgzm1vnjb.jpg"
+                    "format": "binary"
                   },
                   "isFavourite": {
                     "description": "Whether is contacts favourite",
@@ -397,9 +397,9 @@
                     ]
                   },
                   "photo": {
-                    "description": "Link to contact's photo",
+                    "description": "Contact's photo",
                     "type": "string",
-                    "example": "https://res.cloudinary.com/dokixfaw7/image/upload/v1732471141/yqvwtjjjlerkgzm1vnjb.jpg"
+                    "format": "binary"
                   },
                   "isFavourite": {
                     "description": "Whether is contacts favourite",
@@ -829,6 +829,99 @@
           },
           "404": {
             "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh session",
+        "operationId": "refreshUser",
+        "description": "Refresh user session",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully refreshed a session!','",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully refreshed a session!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "accessToken"
+                      ],
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "description": "A newly generated access token for the authenticated user.",
+                          "example": "p5U2kEWH19rgw/cxxZDd63f/P9Nb+FBpyipocash"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-token"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User's logout",
+        "operationId": "logoutUser",
+        "description": "Logout user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully logged out the user. No content returned."
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "500": {
             "$ref": "#/components/responses/500"

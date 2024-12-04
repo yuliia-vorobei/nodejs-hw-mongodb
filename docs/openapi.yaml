@@ -39,12 +39,12 @@ paths:
   /auth/reset-pwd:
     post:
       $ref: ../swagger/paths/auth/reset-pwd.yaml
-  # /auth/refresh:
-  #   post:
-  #     $ref: ../swagger/paths/auth/refresh.yaml
-  # /auth/logout:
-  #   post:
-  #     $ref: ../swagger/paths/auth/logout.yaml
+  /auth/refresh:
+    post:
+      $ref: ../swagger/paths/auth/refresh.yaml
+  /auth/logout:
+    post:
+      $ref: ../swagger/paths/auth/logout.yaml
 components:
   securitySchemes:
     bearerAuth:
