@@ -566,7 +566,7 @@
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/contact"
+                      "$ref": "#/components/schemas/user"
                     }
                   }
                 }
@@ -842,7 +842,7 @@
           "Auth"
         ],
         "summary": "Refresh session",
-        "operationId": "refreshUser",
+        "operationId": "refreshUserSession",
         "description": "Refresh user session",
         "security": [
           {
@@ -991,6 +991,37 @@
             "description": "Unique identifier for the contact",
             "type": "string",
             "example": "673cc87e905635251dadef61"
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "required": [
+          "_id",
+          "name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "_id": {
+            "description": "User's id",
+            "type": "string",
+            "example": "67432bc8d9ac7fd4d324fcf4"
+          },
+          "name": {
+            "description": "User's name",
+            "type": "string",
+            "example": "Yuliia Vorobei"
+          },
+          "email": {
+            "description": "User's email",
+            "type": "string",
+            "example": "vorobeju1@gmail.com"
+          },
+          "password": {
+            "description": "User password",
+            "type": "string",
+            "example": "673cc87h"
           }
         }
       }

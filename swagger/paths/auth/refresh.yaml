@@ -1,7 +1,7 @@
 tags:
   - Auth
 summary: Refresh session
-operationId: refreshUser
+operationId: refreshUserSession
 description: 'Refresh user session'
 security:
   - bearerAuth: []
